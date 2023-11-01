@@ -28,6 +28,10 @@ import io.netty.example.util.ServerUtil;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
+import io.netty.util.internal.logging.InternalLogger;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 
 /**
  * Echoes back any received data from a client.
@@ -36,7 +40,10 @@ public final class EchoServer {
 
     static final int PORT = Integer.parseInt(System.getProperty("port", "8007"));
 
+    static final InternalLogger logger = InternalLoggerFactory.getInstance(EchoServer.class);
+
     public static void main(String[] args) throws Exception {
+        logger.debug("主程序启动");
         // Configure SSL.
         final SslContext sslCtx = ServerUtil.buildSslContext();
 
@@ -63,6 +70,7 @@ public final class EchoServer {
              });
 
             // Start the server.
+            //bind本身是一个异步操作
             ChannelFuture f = b.bind(PORT).sync();
 
             // Wait until the server socket is closed.

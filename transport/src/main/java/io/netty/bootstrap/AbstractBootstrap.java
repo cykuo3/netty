@@ -269,6 +269,8 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     }
 
     private ChannelFuture doBind(final SocketAddress localAddress) {
+        //1、创建一个ServerSocketChannel && 初始化 && 注册到NioEventLoop的Selector上
+        // socketChannel 和 selector的关系是，sc注册到selector上
         final ChannelFuture regFuture = initAndRegister();
         final Channel channel = regFuture.channel();
         if (regFuture.cause() != null) {
@@ -307,7 +309,9 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     final ChannelFuture initAndRegister() {
         Channel channel = null;
         try {
+            //创建channel
             channel = channelFactory.newChannel();
+            //初始化channel
             init(channel);
         } catch (Throwable t) {
             if (channel != null) {
@@ -320,6 +324,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             return new DefaultChannelPromise(new FailedChannel(), GlobalEventExecutor.INSTANCE).setFailure(t);
         }
 
+        //将channel注册到BossEventLoopGroup的其中一个EventLoop的selector上
         ChannelFuture regFuture = config().group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {
