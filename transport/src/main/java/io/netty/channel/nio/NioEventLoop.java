@@ -501,6 +501,9 @@ public final class NioEventLoop extends SingleThreadEventLoop {
         }
     }
 
+    /**
+     * 这个其实就是reactor，就是一个专门负责处理事件的线程
+     */
     @Override
     protected void run() {
         int selectCnt = 0;

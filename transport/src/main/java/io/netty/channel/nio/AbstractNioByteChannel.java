@@ -289,6 +289,7 @@ public abstract class AbstractNioByteChannel extends AbstractNioChannel {
     protected final void incompleteWrite(boolean setOpWrite) {
         // Did not write completely.
         if (setOpWrite) {
+            //注册一个OP_WRITE事件
             setOpWrite();
         } else {
             // It is possible that we have set the write OP, woken up by NIO because the socket is writable, and then
@@ -296,7 +297,6 @@ public abstract class AbstractNioByteChannel extends AbstractNioChannel {
             // writable (as far as we know). We will find out next time we attempt to write if the socket is writable
             // and set the write OP if necessary.
             clearOpWrite();
-
             // Schedule flush again later so other tasks can be picked up in the meantime
             eventLoop().execute(flushTask);
         }
@@ -332,6 +332,7 @@ public abstract class AbstractNioByteChannel extends AbstractNioChannel {
         }
         final int interestOps = key.interestOps();
         if ((interestOps & SelectionKey.OP_WRITE) == 0) {
+            //注册一个OP_WRITE事件
             key.interestOps(interestOps | SelectionKey.OP_WRITE);
         }
     }
