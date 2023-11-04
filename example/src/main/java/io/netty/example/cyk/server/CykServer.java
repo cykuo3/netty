@@ -29,10 +29,10 @@ public class CykServer {
             protected void initChannel(NioSocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast(new ServerFrameDecoder());
+                pipeline.addLast(new ServerFrameEncoder());
+                pipeline.addLast(new ServerProtocolEncoder());
                 pipeline.addLast(new ServerProtocolDecoder());
                 pipeline.addLast(new BusinessHandler());
-                pipeline.addLast(new ServerProtocolEncoder());
-                pipeline.addLast(new ServerFrameEncoder());
             }
         });
 

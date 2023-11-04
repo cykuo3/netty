@@ -12,7 +12,9 @@ public class Message {
 
     public void fromBytebuf(ByteBuf msg){
         long callId = msg.readLong();
-        String content = msg.toString();
+        byte[] bytes = new byte[msg.readableBytes()];
+        msg.readBytes(bytes);
+        String content = new String(bytes,Charset.defaultCharset());
         this.setCallId(callId);
         this.setContent(content);
     }

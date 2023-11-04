@@ -33,14 +33,13 @@ public class CykClient {
             @Override
             protected void initChannel(NioSocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
-                pipeline.addLast(new LoggingHandler(LogLevel.INFO));
-                pipeline.addLast(new ClientProtocolEncoder());
+                pipeline.addLast(new ClientFrameDecoder());
                 pipeline.addLast(new ClientFrameEncoder());
-
+                pipeline.addLast(new ClientProtocolEncoder());
+                pipeline.addLast(new ClientProtocolDecoder());
                 pipeline.addLast(new CallbackDispatchHandler());
 
-                pipeline.addLast(new ClientFrameDecoder());
-                pipeline.addLast(new ClientProtocolDecoder());
+                pipeline.addLast(new LoggingHandler(LogLevel.INFO));
             }
         });
 
