@@ -49,6 +49,7 @@ public class CykClient {
         message.setContent("hello,brother");
 
         ChannelFuture future = bootstrap.connect("127.0.0.1", 8081);
+        //这里会阻塞到连接建立
         future.sync();
         future.channel().writeAndFlush(message);
 
