@@ -51,8 +51,8 @@ public class CykClient {
         ChannelFuture future = bootstrap.connect("127.0.0.1", 8081);
         //这里会阻塞到连接建立
         future.sync();
-        future.channel().writeAndFlush(message);
 
+        future.channel().writeAndFlush(message);
         MessageCallbackFuture<Message> callbackFuture = new MessageCallbackFuture<Message>();
         DispatchService.registerFuture(callId, callbackFuture);
 
