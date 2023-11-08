@@ -1359,6 +1359,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
         @Override
         public void read(ChannelHandlerContext ctx) {
+            //注册OP_READ事件
             unsafe.beginRead();
         }
 

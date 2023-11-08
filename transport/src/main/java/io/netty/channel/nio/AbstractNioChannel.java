@@ -377,9 +377,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         boolean selected = false;
         for (;;) {
             try {
-                //真正的注册 这里才将关心的事件注册到java的selector上。
-                //ops：关心的事件类型
-                //att：处理
+                logger.info("将channel({})注册到selector上,注册事件为0",this.getClass().getName());
                 selectionKey = javaChannel().register(eventLoop().unwrappedSelector(), 0, this);
                 return;
             } catch (CancelledKeyException e) {
@@ -414,6 +412,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
 
         final int interestOps = selectionKey.interestOps();
         if ((interestOps & readInterestOp) == 0) {
+            logger.info("真正的注册事件到selector上 事件类型ops={}",interestOps | readInterestOp);
             selectionKey.interestOps(interestOps | readInterestOp);
         }
     }
